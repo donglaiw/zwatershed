@@ -42,6 +42,10 @@ void mst(
      std::vector<uint64_t> &id1,
      std::vector<uint64_t> &id2,
      size_t max_id);
+void do_mapping_id(
+     std::vector<uint64_t> &id1,
+     std::vector<uint64_t> &id2,
+     std::vector<uint64_t> &mapping);
 void do_mapping(
      std::vector<uint64_t> &id1,
      std::vector<uint64_t> &id2,

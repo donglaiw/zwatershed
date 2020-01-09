@@ -310,6 +310,34 @@ def zw_mst(np.ndarray[np.float32_t, ndim=1] rg_affs,
         out_id2[i] = vid2[i]
     return out_rg_affs, out_id1, out_id2
 
+def zw_do_mapping_id(np.ndarray[np.uint64_t, ndim=1] id1,
+                  np.ndarray[np.uint64_t, ndim=1] id2):
+    '''Find the global mapping of IDs from the region graph without count constraints
+    
+    The region graph should be ordered by decreasing affinity and truncated
+    at the affinity threshold.
+    :param id1: a 1D array of the lefthand side of the two adjacent regions
+    :param id2: a 1D array of the righthand side of the two adjacent regions
+    :returns: a 1D array of the global IDs per local ID
+    '''
+    cdef:
+        vector[uint64_t] vid1
+        vector[uint64_t] vid2
+        vector[uint64_t] vmapping
+        np.ndarray[np.uint64_t, ndim=1] mapping
+    
+    vmapping.resize(max(id1.max(),id2.max())+1)
+    for 0 <= i < id1.shape[0]:
+        vid1.push_back(id1[i])
+        vid2.push_back(id2[i])
+
+    do_mapping_id(vid1, vid2, vmapping)
+
+    mapping = np.zeros(vmapping.size(), np.uint64)
+    for 0 <= i < vmapping.size():
+        mapping[i] = vmapping[i]
+    return mapping
+ 
 def zw_do_mapping(np.ndarray[np.uint64_t, ndim=1] id1,
                   np.ndarray[np.uint64_t, ndim=1] id2,
                   np.ndarray[np.uint64_t, ndim=1] counts,
@@ -370,6 +398,10 @@ cdef extern from "zwatershed.h":
      vector[uint64_t] &id1,
      vector[uint64_t] &id2,
      size_t max_id)
+    void do_mapping_id(
+     vector[uint64_t] &id1,
+     vector[uint64_t] &id2,
+     vector[uint64_t] &mapping)
     void do_mapping(
      vector[uint64_t] &id1,
      vector[uint64_t] &id2,

@@ -251,6 +251,29 @@ void mst(
     rg_to_vectors(*rg_ptr, rg_affs, id1, id2);
 }
 
+void do_mapping_id(
+     std::vector<uint64_t> &id1,
+     std::vector<uint64_t> &id2,
+     std::vector<uint64_t> &mapping) {
+    zi::disjoint_sets<uint64_t> sets(mapping.size());
+    for (size_t i=0; i<id1.size(); ++i) {
+        uint64_t v1 = id1[i];
+        uint64_t v2 = id2[i];
+        uint64_t s1 = sets.find_set(v1);
+        uint64_t s2 = sets.find_set(v2);
+        if (s1 == s2) continue;
+	    uint64_t sjoin = sets.join(s1, s2);
+    }
+    uint64_t id=0;
+    for (size_t i=1; i<mapping.size(); ++i) {
+        if (sets.find_set(i) == i) mapping[i] = ++id;
+    }
+    for (size_t i=1; i<mapping.size(); ++i) {
+        uint64_t s = sets.find_set(i);
+        if (s != i) mapping[i] = mapping[s];
+    }
+}
+
 void do_mapping(
      std::vector<uint64_t> &id1,
      std::vector<uint64_t> &id2,
