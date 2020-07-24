@@ -1,6 +1,6 @@
 # Cython version of Zwatershed
 
-## Install
+## Install (python 2.7)
 `conda install --yes --file requirements.txt` or `pip install -r requirements.txt`
 
 `python setup.py install`
