@@ -2,11 +2,12 @@ from distutils.sysconfig import get_config_vars, get_config_var, get_python_inc
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 import os
-
+import numpy
 
 include_dirs = [
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "zwatershed"),
     os.path.dirname(get_python_inc()),
+    numpy.get_include(),
     get_python_inc()
 ]
 library_dirs = [
