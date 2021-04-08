@@ -25,6 +25,7 @@ class build_ext(_build_ext):
         # Prevent numpy from thinking it is still in its setup process:
         __builtins__.__NUMPY_SETUP__ = False
 
+# pip install --editable .
 setup(name='zwatershed',
       version='0.2',
       description='zwatersheds',
@@ -33,8 +34,7 @@ setup(name='zwatershed',
             build_ext=build_ext
     	),
       license='MIT',
-      install_requires=['cython','numpy','h5py'],	
-	  setup_requires=['cython','numpy'],	
+      install_requires=['cython','numpy','h5py','scipy'],
       packages=['zwatershed'],
          ext_modules = [Extension("zwatershed.zwatershed",
                          ["zwatershed/zwatershed.pyx", "zwatershed/zwatershed_main.cpp"],

@@ -1,9 +1,10 @@
 # Cython version of Zwatershed
 
-## Install (python 2.7)
-`conda install --yes --file requirements.txt` or `pip install -r requirements.txt`
-
-`python setup.py install`
+## Install (python 3.8)
+```
+conda create -n zw python==3.8
+pip install --editable .
+```
 
 ## Package Functions
 representation: affinity -> segmentation -> region graph
